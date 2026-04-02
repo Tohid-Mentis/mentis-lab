@@ -423,20 +423,20 @@ function switchTab(id,btn){
 }
 
 /* API CALL */
-async function callAI(prompt){
-  const r=await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      model:"claude-sonnet-4-20250514",
-      max_tokens:1000,
-      messages:[{role:"user",content:prompt}]
-    })
-  });
-  const d=await r.json();
-  return d.content?.[0]?.text||'';
-}
+async function callAI(prompt) {
+    const response = await fetch('/.netlify/functions/ai', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: prompt })
+    });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data.text || '';
+}
 function setLoad(btnId,on){const b=document.getElementById(btnId);b.classList.toggle('ld',on);b.disabled=on;}
 
 /* ─ CLARITY ─ */
