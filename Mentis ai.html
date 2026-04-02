@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentis AI — The Mentis Lab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#f47b20;--orange-d:#d4640a;--orange-l:#ffa94d;
+  --amber:#fbbf24;--cream:#fffbf4;--paper:#fdf6ec;
+  --text:#1a1208;--text-m:#4a3520;--muted:#9a7d5a;--muted-l:#c4a882;
+  --bdr:rgba(244,123,32,0.15);--bdr-m:rgba(244,123,32,0.25);
+  --shadow:rgba(244,123,32,0.12);
+  --glass:rgba(255,255,255,0.68);--glass2:rgba(255,251,244,0.75);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 10% 15%,rgba(255,180,80,0.18) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 90% 5%,rgba(251,191,36,0.12) 0%,transparent 55%),var(--cream);}
+#bc{position:fixed;inset:0;z-index:1;pointer-events:none;}
+.glass{background:var(--glass);border:1px solid var(--bdr-m);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);box-shadow:0 4px 24px var(--shadow),0 1px 0 rgba(255,255,255,0.8) inset;}
+.gc{background:var(--glass2);border:1px solid var(--bdr-m);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 8px 32px var(--shadow),0 1px 0 rgba(255,255,255,0.9) inset;}
+
+/* LOGO */
+.lm{width:44px;height:44px;flex-shrink:0;}
+.lt{display:flex;flex-direction:column;line-height:1.1;}
+.ls{font-size:0.5rem;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);}
+.ln{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--text);line-height:1;}
+.ln em{color:var(--orange);font-style:italic;}
+
+/* NAV */
+.nb{position:sticky;top:0;z-index:200;background:rgba(255,251,244,0.88);backdrop-filter:blur(24px) saturate(200%);-webkit-backdrop-filter:blur(24px) saturate(200%);border-bottom:1px solid var(--bdr-m);box-shadow:0 2px 20px var(--shadow);padding:0 2rem;}
+.ni{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;}
+.nl{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
+.nbk{display:flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);text-decoration:none;padding:0.5rem 1rem;border:1px solid var(--bdr-m);border-radius:100px;transition:all 0.2s;}
+.nbk:hover{color:var(--orange);border-color:var(--orange);}
+.badge{font-family:'JetBrains Mono',monospace;font-size:0.6rem;background:rgba(244,123,32,0.1);border:1px solid var(--bdr-m);color:var(--orange);padding:0.3rem 0.8rem;border-radius:100px;letter-spacing:0.08em;text-transform:uppercase;}
+
+/* HERO */
+.hero{padding:6rem 2rem 4rem;text-align:center;position:relative;z-index:2;}
+.htag{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(244,123,32,0.08);border:1px solid rgba(244,123,32,0.22);border-radius:100px;padding:0.45rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--orange);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem;}
+.sdot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.4);}50%{opacity:0.8;box-shadow:0 0 0 5px transparent;}}
+.ht{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,6rem);line-height:1.05;letter-spacing:-0.04em;margin-bottom:1.5rem;color:var(--text);}
+.ht .acc{color:var(--orange);font-style:italic;}
+.ht .thn{-webkit-text-stroke:1.5px rgba(244,123,32,0.3);color:transparent;}
+.hsub{font-size:clamp(0.95rem,2vw,1.1rem);color:var(--text-m);font-weight:300;line-height:1.7;max-width:560px;margin:0 auto 3rem;}
+
+/* TABS */
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem 6rem;position:relative;z-index:2;}
+.tab-nav{display:flex;gap:0.5rem;background:rgba(255,255,255,0.6);border:1px solid var(--bdr-m);border-radius:16px;padding:0.4rem;margin-bottom:2rem;backdrop-filter:blur(12px);flex-wrap:wrap;}
+.tab-btn{flex:1;min-width:120px;padding:0.7rem 1rem;border-radius:12px;border:none;background:transparent;font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.4rem;white-space:nowrap;}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 4px 16px rgba(244,123,32,0.3);}
+.tab-btn:not(.active):hover{background:rgba(244,123,32,0.06);color:var(--orange);}
+
+/* TOOL CARD */
+.tool-card{border-radius:24px;overflow:hidden;border:1px solid var(--bdr-m);background:rgba(255,255,255,0.5);backdrop-filter:blur(20px);box-shadow:0 8px 40px var(--shadow);}
+.tc-head{background:rgba(244,123,32,0.05);border-bottom:1px solid var(--bdr-m);padding:1.4rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.tc-head-l{display:flex;align-items:center;gap:0.75rem;}
+.tc-ic{width:40px;height:40px;border-radius:10px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.tc-head h2{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--text);}
+.tc-head p{font-size:0.75rem;color:var(--muted);margin-top:0.1rem;}
+.tc-body{padding:2rem;}
+
+/* PANELS */
+.panel{display:none;}.panel.active{display:block;}
+
+/* INPUTS */
+.inp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
+.inp-lbl{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;display:flex;justify-content:space-between;}
+.inp-lbl button{background:none;border:none;color:var(--muted-l);cursor:pointer;font-family:inherit;font-size:inherit;transition:color 0.2s;}
+.inp-lbl button:hover{color:#ef4444;}
+textarea.tinp{width:100%;padding:1.1rem;background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:12px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.88rem;line-height:1.65;resize:none;transition:all 0.3s;}
+textarea.tinp::placeholder{color:var(--muted-l);}
+textarea.tinp:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,0.95);box-shadow:0 0 0 3px rgba(244,123,32,0.08);}
+input.sinp{width:100%;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:12px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.88rem;transition:all 0.3s;}
+input.sinp::placeholder{color:var(--muted-l);}
+input.sinp:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,0.95);box-shadow:0 0 0 3px rgba(244,123,32,0.08);}
+
+/* BTN */
+.rbtn{background:var(--orange);color:#fff;font-weight:600;font-size:0.9rem;letter-spacing:0.02em;padding:0.95rem 2.8rem;border-radius:100px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:0.6rem;transition:all 0.3s;box-shadow:0 6px 20px rgba(244,123,32,0.35);}
+.rbtn:hover:not(:disabled){background:var(--orange-d);transform:translateY(-2px);box-shadow:0 12px 32px rgba(244,123,32,0.45);}
+.rbtn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp 0.7s linear infinite;display:none;}
+.rbtn.ld .spin{display:block;}.rbtn.ld .bt{opacity:0.7;}
+@keyframes sp{to{transform:rotate(360deg);}}
+
+/* RESULTS */
+.res{display:none;margin-top:2.5rem;}
+.rdiv{display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;}
+.rdiv::before,.rdiv::after{content:'';flex:1;height:1px;background:var(--bdr-m);}
+.rdiv span{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem;}
+.tcol{border-radius:16px;overflow:hidden;border:1px solid var(--bdr-m);}
+.tcol-h{padding:0.85rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid var(--bdr-m);}
+.tcol-b{padding:1.4rem;font-size:0.88rem;line-height:1.7;min-height:180px;}
+.col-raw{background:rgba(244,123,32,0.02);}.col-raw .tcol-h{color:var(--muted);}
+.col-raw .tcol-b{color:var(--muted);font-style:italic;}
+.col-cl{border-color:rgba(244,123,32,0.35) !important;}.col-cl .tcol-h{color:var(--orange);background:rgba(244,123,32,0.05);}
+.col-cl .tcol-b{color:var(--text);}
+.col-ai{background:rgba(255,255,255,0.4);}.col-ai .tcol-h{color:var(--muted);}
+.col-ai .tcol-b{color:var(--text-m);font-size:0.82rem;}
+.highlight{color:var(--orange);font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+
+/* BIAS */
+.bsec{background:rgba(244,123,32,0.04);border:1px solid var(--bdr-m);border-radius:20px;padding:2.5rem;margin-bottom:2rem;}
+.bsec h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;}
+.bsec > p{font-size:0.82rem;color:var(--muted);margin-bottom:2rem;}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;}
+.bcard{background:rgba(255,255,255,0.6);border:1px solid var(--bdr);border-radius:14px;padding:1.4rem;transition:border-color 0.3s;}
+.bcard:hover{border-color:var(--bdr-m);}
+.btype{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;}
+.btitle{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;}
+.bfix{font-size:0.78rem;color:var(--muted);line-height:1.6;font-style:italic;}
+
+/* RESOURCES */
+.rsec h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;}
+.rsec > p{font-size:0.82rem;color:var(--muted);margin-bottom:1.4rem;}
+.rg{display:flex;flex-wrap:wrap;gap:0.75rem;}
+.rb2{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);padding:0.65rem 1.15rem;border-radius:100px;font-size:0.78rem;font-weight:500;color:var(--text-m);text-decoration:none;transition:all 0.25s;}
+.rb2:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);}
+
+/* ESSAY TOOL */
+.essay-out{background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:16px;padding:1.8rem;margin-top:1.5rem;min-height:120px;font-size:0.9rem;line-height:1.75;color:var(--text-m);display:none;}
+.essay-score{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;}
+.escore{background:rgba(244,123,32,0.08);border:1px solid var(--bdr-m);border-radius:12px;padding:1rem 1.25rem;flex:1;min-width:120px;}
+.escore-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--orange);line-height:1;}
+.escore-lbl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem;}
+
+/* CONCEPT TOOL */
+.concept-out{background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:16px;padding:1.8rem;margin-top:1.5rem;display:none;}
+.co-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--text);margin-bottom:1rem;}
+.co-body{font-size:0.9rem;line-height:1.75;color:var(--text-m);}
+.co-syllo{margin-top:1.2rem;padding:1rem 1.2rem;background:rgba(244,123,32,0.06);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;font-size:0.82rem;color:var(--text-m);}
+.co-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.2rem;}
+.co-tag{font-family:'JetBrains Mono',monospace;font-size:0.6rem;background:rgba(244,123,32,0.08);color:var(--orange);padding:0.25rem 0.65rem;border-radius:100px;border:1px solid var(--bdr-m);}
+
+/* QUIZ TOOL */
+.quiz-q{background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:16px;padding:1.8rem;margin-top:1.5rem;display:none;}
+.qq-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:1.5rem;}
+.qq-opts{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.5rem;}
+.qq-opt{padding:0.85rem 1.2rem;border-radius:10px;border:1px solid var(--bdr-m);background:rgba(255,255,255,0.6);cursor:pointer;font-size:0.88rem;color:var(--text-m);transition:all 0.2s;text-align:left;}
+.qq-opt:hover:not(:disabled){border-color:var(--orange);color:var(--orange);background:rgba(244,123,32,0.04);}
+.qq-opt.correct{border-color:#22c55e;background:rgba(34,197,94,0.08);color:#15803d;}
+.qq-opt.wrong{border-color:#ef4444;background:rgba(239,68,68,0.06);color:#dc2626;}
+.qq-exp{font-size:0.82rem;color:var(--text-m);line-height:1.65;padding:1rem;background:rgba(244,123,32,0.05);border-radius:10px;display:none;}
+
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 2rem;color:var(--muted);}
+.empty .ei{font-size:2.5rem;margin-bottom:1rem;opacity:0.5;}
+.empty p{font-size:0.88rem;line-height:1.65;max-width:360px;margin:0 auto;color:var(--muted);}
+
+/* HOW */
+.how{max-width:1100px;margin:0 auto;padding:4rem 2rem;border-top:1px solid var(--bdr-m);position:relative;z-index:2;}
+.hg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:3rem;}
+.hs{text-align:center;}
+.hn{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:rgba(244,123,32,0.2);line-height:1;margin-bottom:0.85rem;}
+.htl{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;}
+.hd{font-size:0.78rem;color:var(--muted);line-height:1.6;font-weight:300;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--bdr-m);padding:2rem;position:relative;z-index:2;background:rgba(255,251,244,0.8);}
+.fr{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);}
+.fr a{color:var(--orange);text-decoration:none;}
+
+@media(max-width:768px){.inp-grid{grid-template-columns:1fr;}.tgrid{grid-template-columns:1fr;}.tc-body{padding:1.25rem;}.ht{font-size:3rem;}}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<canvas id="bc"></canvas>
+
+<!-- NAV -->
+<nav class="nb">
+  <div class="ni">
+    <a href="index.html" class="nl">
+      <div class="lm"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" stroke="#f47b20" stroke-width="1.4" opacity="0.75"/><circle cx="24" cy="24" r="17" stroke="#fbbf24" stroke-width="0.7" stroke-dasharray="2.5 3" opacity="0.4"/><ellipse cx="24" cy="24" rx="13.5" ry="6.5" stroke="#f47b20" stroke-width="0.85" stroke-dasharray="3 2.5" opacity="0.55" transform="rotate(-28 24 24)"/><circle cx="35.5" cy="14.5" r="2.8" fill="#f47b20" opacity="0.95"/><circle cx="35.5" cy="14.5" r="5" fill="rgba(244,123,32,0.12)"/><circle cx="24" cy="24" r="9.5" fill="rgba(255,251,244,0.6)" stroke="rgba(244,123,32,0.15)" stroke-width="0.8"/><text x="24" y="28.5" font-family="Cormorant Garamond, Georgia, serif" font-size="10.5" font-weight="600" font-style="italic" fill="#f47b20" text-anchor="middle" letter-spacing="-0.5">ML</text></svg></div>
+      <div class="lt"><span class="ls">the</span><span class="ln">Mentis <em>Lab</em></span></div>
+    </a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span class="badge">✦ Mentis AI</span>
+      <a href="index.html" class="nbk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to Lab</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div style="position:relative;z-index:2;">
+    <div class="htag"><span class="sdot"></span>Free · No Login · Live</div>
+    <h1 class="ht">Mentis <span class="acc">AI</span><br><span class="thn">Think Engine</span></h1>
+    <p class="hsub">Four powerful thinking tools in one place — clarity, bias detection, essay coaching, and concept learning. All free, all yours.</p>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tabs-wrap">
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('clarity',this)">🔍 Clarity Engine</button>
+    <button class="tab-btn" onclick="switchTab('essay',this)">✍️ Essay Coach</button>
+    <button class="tab-btn" onclick="switchTab('concept',this)">💡 Concept Explainer</button>
+    <button class="tab-btn" onclick="switchTab('quiz',this)">🎯 Quick Quiz</button>
+  </div>
+
+  <!-- ═══ CLARITY ═══ -->
+  <div id="tab-clarity" class="panel active">
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-head-l"><div class="tc-ic">🔍</div><div><h2>Clarity Engine</h2><p>Paste any text — get a cleaner version, detect biases, explore further</p></div></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);">v1.0 · BETA</span>
+      </div>
+      <div class="tc-body">
+        <div class="inp-grid">
+          <div>
+            <div class="inp-lbl"><span>Your Text</span><button onclick="document.getElementById('cl-text').value=''">Clear</button></div>
+            <textarea id="cl-text" class="tinp" rows="9" placeholder="Paste an article, news story, research excerpt, essay… anything you want to understand better."></textarea>
+          </div>
+          <div>
+            <div class="inp-lbl"><span>AI Version to Compare (optional)</span><button onclick="document.getElementById('cl-ai').value=''">Clear</button></div>
+            <textarea id="cl-ai" class="tinp" rows="9" placeholder="Paste an AI-generated version of the same text if you have one — we'll compare tone and substance."></textarea>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;">
+          <button class="rbtn" id="cl-btn" onclick="runClarity()">
+            <div class="spin"></div>
+            <span class="bt"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Analyse with Mentis AI</span>
+          </button>
+        </div>
+        <div class="res" id="cl-res">
+          <div class="rdiv"><span>Analysis Complete</span></div>
+          <div class="tgrid">
+            <div class="glass tcol col-raw"><div class="tcol-h">📄 Raw Input</div><div class="tcol-b" id="cl-raw"></div></div>
+            <div class="glass tcol col-cl"><div class="tcol-h">✦ Clearer Version</div><div class="tcol-b" id="cl-out"></div></div>
+            <div class="glass tcol col-ai"><div class="tcol-h">🤖 Machine Tone</div><div class="tcol-b" id="cl-aiout"></div></div>
+          </div>
+          <div class="bsec">
+            <h3>Thinking Traps <span style="color:var(--orange);font-style:italic;">Detected</span></h3>
+            <p>Common biases and logical errors — explained simply.</p>
+            <div class="bgrid" id="cl-bias"></div>
+          </div>
+          <div class="rsec">
+            <h3>Explore Further</h3>
+            <p>Key topics found — click to research directly.</p>
+            <div class="rg" id="cl-res2"></div>
+          </div>
+        </div>
+        <div class="empty" id="cl-empty">
+          <div class="ei">🔬</div>
+          <p>Paste any text above and click <strong style="color:var(--text);">Analyse with Mentis AI</strong> to get started.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ESSAY COACH ═══ -->
+  <div id="tab-essay" class="panel">
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-head-l"><div class="tc-ic" style="background:#9333ea;">✍️</div><div><h2>Essay Coach</h2><p>Submit your writing for structured feedback on argument, clarity, and style</p></div></div>
+      </div>
+      <div class="tc-body">
+        <div style="margin-bottom:1.5rem;">
+          <div class="inp-lbl"><span>Essay or Paragraph</span><button onclick="document.getElementById('es-text').value=''">Clear</button></div>
+          <textarea id="es-text" class="tinp" rows="10" placeholder="Paste your essay, paragraph, or draft here. Works for school essays, university personal statements, or any writing you want to improve…"></textarea>
+        </div>
+        <div style="margin-bottom:2rem;">
+          <div class="inp-lbl"><span>Subject / Context (optional)</span></div>
+          <input type="text" id="es-ctx" class="sinp" placeholder="e.g. A-Level Biology essay on cell division, UCAS personal statement for Medicine…">
+        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:1rem;">
+          <button class="rbtn" id="es-btn" onclick="runEssay()">
+            <div class="spin"></div>
+            <span class="bt">✍️ Coach My Essay</span>
+          </button>
+        </div>
+        <div class="essay-score" id="es-scores" style="display:none;"></div>
+        <div class="essay-out" id="es-out"></div>
+        <div class="empty" id="es-empty">
+          <div class="ei">✍️</div>
+          <p>Paste your essay or paragraph above. You'll get a score breakdown and specific, actionable feedback — not vague AI praise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CONCEPT EXPLAINER ═══ -->
+  <div id="tab-concept" class="panel">
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-head-l"><div class="tc-ic" style="background:#0ea5e9;">💡</div><div><h2>Concept Explainer</h2><p>Type any science or academic concept — get a plain-English breakdown with syllabus links</p></div></div>
+      </div>
+      <div class="tc-body">
+        <div style="margin-bottom:1.5rem;">
+          <div class="inp-lbl"><span>Concept or Topic</span></div>
+          <input type="text" id="co-text" class="sinp" placeholder="e.g. Action potential, CRISPR, molar mass, Hardy-Weinberg equilibrium, photosynthesis…" onkeydown="if(event.key==='Enter')runConcept()">
+        </div>
+        <div style="margin-bottom:2rem;">
+          <div class="inp-lbl"><span>Your Level (optional)</span></div>
+          <input type="text" id="co-level" class="sinp" placeholder="e.g. A-Level student, complete beginner, university first year…">
+        </div>
+        <div style="display:flex;justify-content:center;">
+          <button class="rbtn" id="co-btn" onclick="runConcept()">
+            <div class="spin"></div>
+            <span class="bt">💡 Explain This</span>
+          </button>
+        </div>
+        <div class="concept-out" id="co-out">
+          <div class="co-title" id="co-t"></div>
+          <div class="co-body" id="co-b"></div>
+          <div class="co-syllo" id="co-s"></div>
+          <div class="co-tags" id="co-tags"></div>
+        </div>
+        <div class="empty" id="co-empty">
+          <div class="ei">💡</div>
+          <p>Type any concept above — from A-Level Biology topics to university-level neuroscience. We'll break it down clearly at your level.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ QUICK QUIZ ═══ -->
+  <div id="tab-quiz" class="panel">
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-head-l"><div class="tc-ic" style="background:#16a34a;">🎯</div><div><h2>Quick Quiz</h2><p>Generate a custom quiz question on any science topic — test your understanding instantly</p></div></div>
+      </div>
+      <div class="tc-body">
+        <div style="margin-bottom:1.5rem;">
+          <div class="inp-lbl"><span>Topic</span></div>
+          <input type="text" id="qz-topic" class="sinp" placeholder="e.g. Neurotransmitters, DNA replication, the blood-brain barrier, CRISPR…" onkeydown="if(event.key==='Enter')runQuiz()">
+        </div>
+        <div style="margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div>
+            <div class="inp-lbl"><span>Difficulty</span></div>
+            <select id="qz-diff" class="sinp" style="cursor:pointer;">
+              <option value="GCSE level">GCSE / Basic</option>
+              <option value="A-Level" selected>A-Level</option>
+              <option value="university first year">University (1st year)</option>
+            </select>
+          </div>
+          <div>
+            <div class="inp-lbl"><span>Type</span></div>
+            <select id="qz-type" class="sinp" style="cursor:pointer;">
+              <option value="multiple choice with 4 options">Multiple Choice</option>
+              <option value="true or false">True / False</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;">
+          <button class="rbtn" id="qz-btn" onclick="runQuiz()">
+            <div class="spin"></div>
+            <span class="bt">🎯 Generate Question</span>
+          </button>
+        </div>
+        <div class="quiz-q" id="qz-out">
+          <div class="qq-text" id="qz-q"></div>
+          <div class="qq-opts" id="qz-opts"></div>
+          <div class="qq-exp" id="qz-exp"></div>
+          <button class="rbtn" id="qz-next" style="display:none;margin-top:1rem;padding:0.7rem 1.8rem;font-size:0.82rem;" onclick="runQuiz()">Next Question →</button>
+        </div>
+        <div class="empty" id="qz-empty">
+          <div class="ei">🎯</div>
+          <p>Enter any science topic and your difficulty level — get a custom quiz question generated in seconds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div style="text-align:center;margin-bottom:0.85rem;"><span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.12em;">How It Works</span></div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.1rem;text-align:center;letter-spacing:-0.02em;color:var(--text);">Four tools. Zero cost. Infinite clarity.</h2>
+  <div class="hg">
+    <div class="hs"><div class="hn">01</div><div class="htl">Clarity Engine</div><div class="hd">Paste any text and get a simplified version, bias scan, and resource links.</div></div>
+    <div class="hs"><div class="hn">02</div><div class="htl">Essay Coach</div><div class="hd">Get scored feedback on argument strength, clarity, and writing style.</div></div>
+    <div class="hs"><div class="hn">03</div><div class="htl">Concept Explainer</div><div class="hd">Type any concept and get a plain-English breakdown at your level.</div></div>
+    <div class="hs"><div class="hn">04</div><div class="htl">Quick Quiz</div><div class="hd">Generate custom quiz questions on any topic to test your understanding.</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fr">
+    <span>© 2026 The Mentis Lab · All Rights Reserved.</span>
+    <span style="color:var(--orange);">Think Deeper. Go Further.</span>
+    <span><a href="index.html">← Back to The Mentis Lab</a></span>
+  </div>
+</footer>
+
+<script>
+/* BUBBLES */
+const cv=document.getElementById('bc'),ctx=cv.getContext('2d');
+let bubs=[];
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+function mkb(){return{x:Math.random()*cv.width,y:cv.height+Math.random()*200,r:3+Math.random()*18,sp:0.2+Math.random()*0.5,dr:(Math.random()-0.5)*0.3,op:0.04+Math.random()*0.1,h:Math.random()<0.6?'rgba(244,123,32,':Math.random()<0.5?'rgba(251,191,36,':'rgba(255,200,100,'};}
+for(let i=0;i<36;i++){const b=mkb();b.y=Math.random()*cv.height;bubs.push(b);}
+function db(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  bubs.forEach(b=>{
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    const g=ctx.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.05,b.x,b.y,b.r);
+    g.addColorStop(0,b.h+(b.op*2.5)+')');g.addColorStop(0.65,b.h+b.op+')');g.addColorStop(1,b.h+(b.op*0.2)+')');
+    ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=b.h+(b.op*2)+')';ctx.lineWidth=0.6;ctx.stroke();
+    ctx.beginPath();ctx.arc(b.x-b.r*0.28,b.y-b.r*0.3,b.r*0.2,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+    b.y-=b.sp;b.x+=b.dr;if(b.y+b.r<0){bubs[bubs.indexOf(b)]=mkb();}
+  });
+  requestAnimationFrame(db);
+}
+db();
+
+/* TABS */
+function switchTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* API CALL */
+async function callAI(prompt){
+  const r=await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",
+      max_tokens:1000,
+      messages:[{role:"user",content:prompt}]
+    })
+  });
+  const d=await r.json();
+  return d.content?.[0]?.text||'';
+}
+
+function setLoad(btnId,on){const b=document.getElementById(btnId);b.classList.toggle('ld',on);b.disabled=on;}
+
+/* ─ CLARITY ─ */
+async function runClarity(){
+  const text=document.getElementById('cl-text').value.trim();
+  const aiRef=document.getElementById('cl-ai').value.trim();
+  if(!text){document.getElementById('cl-text').style.borderColor='#ef4444';setTimeout(()=>document.getElementById('cl-text').style.borderColor='',2000);return;}
+  setLoad('cl-btn',true);
+  document.getElementById('cl-res').style.display='none';
+  document.getElementById('cl-empty').style.display='none';
+  try{
+    const raw=await callAI(`You are Mentis AI. Analyse this text: "${text.substring(0,3000)}"
+Return ONLY valid JSON (no backticks):
+{"synthesis":"Rewrite clearly in 3-5 sentences, use <span class='highlight'> on 2-3 key phrases","pureAI":"Robotic jargon-heavy version 2 sentences","bias":[{"type":"Trap name","description":"Simple explanation","fix":"Practical tip"},{"type":"Name","description":"Explanation","fix":"Tip"}],"keywords":["Topic1","Topic2","Topic3","Topic4"]}`);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('cl-raw').textContent=text.substring(0,400)+(text.length>400?'…':'');
+    document.getElementById('cl-out').innerHTML=d.synthesis||'Analysis complete.';
+    document.getElementById('cl-aiout').textContent=d.pureAI||'No AI reference.';
+    document.getElementById('cl-bias').innerHTML=(d.bias||[]).map(b=>`<div class="bcard"><div class="btype">${b.type||'Bias'}</div><div class="btitle">${b.description||''}</div><div class="bfix">Tip: ${b.fix||''}</div></div>`).join('')||'<div class="bcard"><div class="btype">Clean</div><div class="btitle">No significant biases detected.</div></div>';
+    document.getElementById('cl-res2').innerHTML=(d.keywords||[]).flatMap(k=>[`<a href="https://www.google.com/search?q=${encodeURIComponent(k)}+explained" target="_blank" class="rb2"><span>🔍</span> Search "${k}"</a>`,`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(k)}+explained" target="_blank" class="rb2"><span>▶</span> Watch "${k}"</a>`]).join('');
+    document.getElementById('cl-res').style.display='block';
+    document.getElementById('cl-res').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){console.error(e);document.getElementById('cl-empty').style.display='block';document.getElementById('cl-empty').querySelector('p').innerHTML='<strong style="color:#ef4444;">Something went wrong.</strong> Check your connection and try again.';}
+  finally{setLoad('cl-btn',false);}
+}
+
+/* ─ ESSAY ─ */
+async function runEssay(){
+  const text=document.getElementById('es-text').value.trim();
+  const ctx2=document.getElementById('es-ctx').value.trim();
+  if(!text){document.getElementById('es-text').style.borderColor='#ef4444';setTimeout(()=>document.getElementById('es-text').style.borderColor='',2000);return;}
+  setLoad('es-btn',true);
+  document.getElementById('es-out').style.display='none';
+  document.getElementById('es-scores').style.display='none';
+  document.getElementById('es-empty').style.display='none';
+  try{
+    const raw=await callAI(`You are Mentis AI Essay Coach. Context: "${ctx2||'general academic writing'}". Essay: "${text.substring(0,3000)}"
+Return ONLY valid JSON (no backticks):
+{"scores":{"argument":75,"clarity":80,"style":70,"evidence":65},"feedback":"Detailed constructive feedback in 4-6 sentences. Be specific and honest — not vague. Point out specific sentences or phrases that need work. Then explain what to do better.","improvements":["Specific improvement 1","Specific improvement 2","Specific improvement 3"]}`);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const scores=d.scores||{};
+    document.getElementById('es-scores').innerHTML=Object.entries(scores).map(([k,v])=>`<div class="escore"><div class="escore-num">${v}</div><div class="escore-lbl">${k}</div></div>`).join('');
+    document.getElementById('es-scores').style.display='flex';
+    document.getElementById('es-out').innerHTML=`<p style="margin-bottom:1rem;">${d.feedback||''}</p>${(d.improvements||[]).map((s,i)=>`<div style="display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.75rem;"><span style="background:rgba(244,123,32,0.1);color:var(--orange);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span><span style="font-size:0.85rem;color:var(--text-m);line-height:1.65;">${s}</span></div>`).join('')}`;
+    document.getElementById('es-out').style.display='block';
+  }catch(e){console.error(e);}
+  finally{setLoad('es-btn',false);}
+}
+
+/* ─ CONCEPT ─ */
+async function runConcept(){
+  const concept=document.getElementById('co-text').value.trim();
+  const level=document.getElementById('co-level').value.trim()||'A-Level student';
+  if(!concept){document.getElementById('co-text').style.borderColor='#ef4444';setTimeout(()=>document.getElementById('co-text').style.borderColor='',2000);return;}
+  setLoad('co-btn',true);
+  document.getElementById('co-out').style.display='none';
+  document.getElementById('co-empty').style.display='none';
+  try{
+    const raw=await callAI(`You are Mentis AI. Explain "${concept}" to a ${level}.
+Return ONLY valid JSON (no backticks):
+{"title":"${concept}","explanation":"Clear plain-English explanation in 3-5 sentences at the right level. Use an analogy if helpful.","syllabusLink":"How this connects to CAIE A-Level or university syllabus in 1-2 sentences.","relatedConcepts":["Related1","Related2","Related3","Related4"]}`);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('co-t').textContent=d.title||concept;
+    document.getElementById('co-b').textContent=d.explanation||'';
+    document.getElementById('co-s').innerHTML=`<strong style="color:var(--orange);">📚 Syllabus Link:</strong> ${d.syllabusLink||''}`;
+    document.getElementById('co-tags').innerHTML=(d.relatedConcepts||[]).map(c=>`<a href="#" class="co-tag" onclick="document.getElementById('co-text').value='${c}';runConcept();return false;">${c}</a>`).join('');
+    document.getElementById('co-out').style.display='block';
+    document.getElementById('co-out').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){console.error(e);}
+  finally{setLoad('co-btn',false);}
+}
+
+/* ─ QUIZ ─ */
+let quizAnswered=false;
+async function runQuiz(){
+  const topic=document.getElementById('qz-topic').value.trim();
+  const diff=document.getElementById('qz-diff').value;
+  const type=document.getElementById('qz-type').value;
+  if(!topic){document.getElementById('qz-topic').style.borderColor='#ef4444';setTimeout(()=>document.getElementById('qz-topic').style.borderColor='',2000);return;}
+  setLoad('qz-btn',true);
+  document.getElementById('qz-out').style.display='none';
+  document.getElementById('qz-empty').style.display='none';
+  document.getElementById('qz-next').style.display='none';
+  quizAnswered=false;
+  try{
+    const raw=await callAI(`Generate a ${diff} ${type} quiz question about "${topic}" for a science student.
+Return ONLY valid JSON (no backticks):
+{"question":"The question text","options":["Option A","Option B","Option C","Option D"],"correct":0,"explanation":"Why the correct answer is right and why the others are wrong, in 2-3 sentences."}`);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('qz-q').textContent=d.question||'';
+    document.getElementById('qz-exp').textContent=d.explanation||'';
+    document.getElementById('qz-exp').style.display='none';
+    document.getElementById('qz-opts').innerHTML=(d.options||[]).map((o,i)=>`<button class="qq-opt" onclick="answerQuiz(${i},${d.correct},this)">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+    document.getElementById('qz-out').style.display='block';
+    document.getElementById('qz-out').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){console.error(e);}
+  finally{setLoad('qz-btn',false);}
+}
+
+function answerQuiz(chosen,correct,btn){
+  if(quizAnswered)return;
+  quizAnswered=true;
+  document.querySelectorAll('.qq-opt').forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');});
+  if(chosen!==correct)btn.classList.add('wrong');
+  document.getElementById('qz-exp').style.display='block';
+  document.getElementById('qz-next').style.display='inline-flex';
+}
+
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){const active=document.querySelector('.panel.active').id;if(active==='tab-clarity')runClarity();else if(active==='tab-essay')runEssay();else if(active==='tab-concept')runConcept();else if(active==='tab-quiz')runQuiz();}});
+</script>
+</body>
+</html>

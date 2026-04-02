@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mentis Lab — Think Deeper. Go Further.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#f47b20;--orange-d:#d4640a;--orange-l:#ffa94d;
+  --amber:#fbbf24;--amber-pale:#fef3c7;
+  --cream:#fffbf4;--paper:#fdf6ec;--warm:#fff8ee;
+  --text:#1a1208;--text-m:#4a3520;--muted:#9a7d5a;--muted-l:#c4a882;
+  --bdr:rgba(244,123,32,0.15);--bdr-m:rgba(244,123,32,0.25);
+  --shadow:rgba(244,123,32,0.12);
+  --glass:rgba(255,255,255,0.68);--glass2:rgba(255,251,244,0.72);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 10% 15%,rgba(255,180,80,0.2) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 90% 5%,rgba(251,191,36,0.13) 0%,transparent 55%),radial-gradient(ellipse 70% 40% at 50% 95%,rgba(244,123,32,0.1) 0%,transparent 60%),var(--cream);}
+#bc{position:fixed;inset:0;z-index:1;pointer-events:none;}
+.glass{background:var(--glass);border:1px solid var(--bdr-m);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);box-shadow:0 4px 24px var(--shadow),0 1px 0 rgba(255,255,255,0.8) inset;}
+.gc{background:var(--glass2);border:1px solid var(--bdr-m);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 8px 32px var(--shadow),0 1px 0 rgba(255,255,255,0.9) inset;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);}
+.gc:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(244,123,32,0.18),0 1px 0 rgba(255,255,255,0.9) inset;border-color:rgba(244,123,32,0.4);}
+
+/* LOGO */
+.lm{width:48px;height:48px;flex-shrink:0;}
+.lt{display:flex;flex-direction:column;line-height:1.1;}
+.ls{font-family:'Sora',sans-serif;font-size:0.5rem;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);}
+.ln{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;letter-spacing:0.02em;color:var(--text);line-height:1;}
+.ln em{color:var(--orange);font-style:italic;}
+
+/* NAV */
+.nb{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 2rem;transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}
+.nb.sc{background:rgba(255,251,244,0.88);backdrop-filter:blur(24px) saturate(200%);-webkit-backdrop-filter:blur(24px) saturate(200%);border-bottom:1px solid var(--bdr-m);box-shadow:0 2px 20px var(--shadow);}
+.ni{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:80px;}
+.nl{display:flex;align-items:center;gap:0.75rem;text-decoration:none;}
+.nls{display:flex;align-items:center;gap:2.5rem;list-style:none;}
+.nls a{color:var(--text-m);text-decoration:none;font-size:0.82rem;font-weight:500;position:relative;transition:color 0.2s;}
+.nls a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1.5px;background:var(--orange);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.nls a:hover{color:var(--orange);}
+.nls a:hover::after{transform:scaleX(1);}
+.nai{background:var(--orange);color:#fff !important;font-weight:600 !important;font-size:0.8rem !important;padding:0.55rem 1.3rem;border-radius:100px;transition:all 0.25s !important;box-shadow:0 4px 16px rgba(244,123,32,0.3);display:flex;align-items:center;gap:0.4rem;}
+.nai::after{display:none !important;}
+.nai:hover{background:var(--orange-d) !important;color:#fff !important;transform:translateY(-2px);box-shadow:0 8px 24px rgba(244,123,32,0.4) !important;}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:300;}
+.hbg span{display:block;width:22px;height:1.5px;background:var(--text);border-radius:2px;transition:all 0.3s;transform-origin:center;}
+.hbg.op span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hbg.op span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hbg.op span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.md{position:fixed;top:0;right:-100%;width:min(340px,88vw);height:100vh;background:rgba(255,251,244,0.97);backdrop-filter:blur(40px);border-left:1px solid var(--bdr-m);z-index:250;padding:7rem 2.5rem 2.5rem;display:flex;flex-direction:column;gap:0.25rem;transition:right 0.45s cubic-bezier(0.16,1,0.3,1);box-shadow:-8px 0 40px var(--shadow);}
+.md.op{right:0;}
+.md a{color:var(--text-m);text-decoration:none;font-size:1.1rem;font-weight:500;padding:1rem 0;border-bottom:1px solid var(--bdr);transition:color 0.2s,padding-left 0.25s;}
+.md a:hover{color:var(--orange);padding-left:0.5rem;}
+.ov{position:fixed;inset:0;background:rgba(100,60,10,0.2);z-index:240;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px);}
+.ov.op{opacity:1;pointer-events:all;}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.05fr 0.95fr;align-items:center;padding:9rem 2rem 6rem;position:relative;overflow:hidden;max-width:1280px;margin:0 auto;}
+.eyebrow{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(244,123,32,0.08);border:1px solid rgba(244,123,32,0.22);border-radius:100px;padding:0.45rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:2.5rem;animation:fu 0.8s ease both;}
+.edot{width:5px;height:5px;border-radius:50%;background:var(--orange);animation:blink 2.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.htitle{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6.5vw,5.5rem);line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.75rem;color:var(--text);animation:fu 0.9s 0.1s ease both;}
+.htitle .acc{color:var(--orange);font-style:italic;}
+.htitle .thn{font-weight:400;-webkit-text-stroke:1px rgba(244,123,32,0.3);color:transparent;}
+.ticker{overflow:hidden;height:2rem;margin-bottom:2rem;animation:fu 0.9s 0.2s ease both;}
+.ticker-in{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;color:var(--muted);line-height:2rem;animation:ts 5s ease-in-out infinite;}
+@keyframes ts{0%,38%{transform:translateY(0);}50%,88%{transform:translateY(-2rem);}100%{transform:translateY(0);}}
+.hdesc{font-size:clamp(0.9rem,1.4vw,1rem);color:var(--text-m);line-height:1.8;font-weight:300;max-width:480px;margin-bottom:3rem;animation:fu 0.9s 0.3s ease both;}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap;animation:fu 0.9s 0.4s ease both;}
+.bf{background:var(--orange);color:#fff;font-weight:600;font-size:0.85rem;padding:0.9rem 2rem;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;border:none;cursor:pointer;transition:all 0.25s;box-shadow:0 6px 20px rgba(244,123,32,0.35);}
+.bf:hover{background:var(--orange-d);transform:translateY(-2px);box-shadow:0 12px 32px rgba(244,123,32,0.45);}
+.bg2{background:rgba(255,255,255,0.7);color:var(--text);font-weight:500;font-size:0.85rem;padding:0.9rem 2rem;border-radius:100px;border:1px solid var(--bdr-m);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;backdrop-filter:blur(8px);transition:all 0.25s;}
+.bg2:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);background:rgba(255,255,255,0.9);}
+.hr{position:relative;display:flex;align-items:center;justify-content:center;animation:fu 1s 0.25s ease both;}
+.hiw{position:relative;width:100%;max-width:500px;}
+.hiw img{width:100%;height:460px;object-fit:cover;border-radius:28px;filter:brightness(0.9) saturate(1.1);box-shadow:0 32px 80px rgba(244,123,32,0.2);}
+.hit{position:absolute;inset:0;border-radius:28px;background:linear-gradient(135deg,rgba(244,123,32,0.12),rgba(251,191,36,0.06) 60%,transparent);border:1px solid rgba(244,123,32,0.2);}
+.fc{position:absolute;padding:1rem 1.4rem;border-radius:16px;background:rgba(255,255,255,0.82);border:1px solid rgba(244,123,32,0.22);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(244,123,32,0.15);}
+.fc1{bottom:2.5rem;left:-2rem;min-width:180px;animation:flt 4s ease-in-out infinite;}
+.fc2{top:2rem;right:-1.5rem;animation:flt 5s 1s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.fcl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;}
+.fcv{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);}
+.fcs{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.04em;}
+
+/* STATS */
+.sb{background:rgba(255,255,255,0.5);border-top:1px solid var(--bdr-m);border-bottom:1px solid var(--bdr-m);backdrop-filter:blur(16px);padding:2.5rem 2rem;position:relative;z-index:2;}
+.si{max-width:1280px;margin:0 auto;display:flex;justify-content:center;gap:5rem;flex-wrap:wrap;}
+.sn{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--orange);line-height:1;display:block;}
+.sl{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.35rem;}
+
+/* SECTIONS */
+section{position:relative;z-index:2;}
+.sp{padding:8rem 2rem;}
+.sw{max-width:1280px;margin:0 auto;}
+.se{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:500;text-transform:uppercase;letter-spacing:0.14em;color:var(--orange);margin-bottom:0.85rem;display:flex;align-items:center;gap:0.75rem;}
+.se::before{content:'';display:block;width:18px;height:1.5px;background:var(--orange);}
+.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,3.2rem);line-height:1.1;letter-spacing:-0.025em;margin-bottom:0.75rem;color:var(--text);}
+.sd{color:var(--muted);font-size:0.95rem;font-weight:300;line-height:1.7;}
+
+/* ARTICLES */
+.ac{border-radius:22px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;}
+.ac:hover .ai2 img{transform:scale(1.05);}
+.ai2{overflow:hidden;height:210px;}
+.ai2 img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s;filter:brightness(0.9) saturate(1.1);}
+.ab{padding:1.6rem;flex:1;display:flex;flex-direction:column;}
+.at{font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;padding:0.25rem 0.75rem;border-radius:100px;display:inline-block;margin-bottom:0.85rem;}
+.tn{background:rgba(56,189,248,0.1);color:#0284c7;border:1px solid rgba(56,189,248,0.25);}
+.tp{background:rgba(244,123,32,0.1);color:var(--orange);border:1px solid rgba(244,123,32,0.25);}
+.tb{background:rgba(34,197,94,0.1);color:#16a34a;border:1px solid rgba(34,197,94,0.25);}
+.te{background:rgba(168,85,247,0.1);color:#9333ea;border:1px solid rgba(168,85,247,0.25);}
+.atl{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;line-height:1.3;margin-bottom:0.65rem;color:var(--text);}
+.ax{font-size:0.82rem;color:var(--muted);line-height:1.65;font-weight:300;flex:1;margin-bottom:1.3rem;}
+.af{display:flex;justify-content:space-between;align-items:center;padding-top:0.9rem;border-top:1px solid var(--bdr);}
+.ar{font-size:0.75rem;font-weight:600;color:var(--orange);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:gap 0.2s;}
+.ar:hover{gap:0.7rem;}
+.atime{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted-l);}
+
+/* SEARCH */
+.srw{position:relative;max-width:480px;}
+.srw svg{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);color:var(--muted-l);}
+.sri{width:100%;padding:0.95rem 1.1rem 0.95rem 3rem;background:rgba(255,255,255,0.7);border:1px solid var(--bdr-m);border-radius:14px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.88rem;backdrop-filter:blur(12px);transition:all 0.3s;}
+.sri::placeholder{color:var(--muted-l);}
+.sri:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,0.9);box-shadow:0 0 0 3px rgba(244,123,32,0.1);}
+
+/* TOPICS */
+.tc2{border-radius:18px;padding:1.75rem;cursor:pointer;display:flex;flex-direction:column;gap:0.6rem;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);}
+.tc2:hover{transform:translateY(-6px);border-color:rgba(244,123,32,0.4) !important;box-shadow:0 24px 48px rgba(244,123,32,0.15);}
+.ti{font-size:1.8rem;margin-bottom:0.25rem;}
+.tt{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);}
+.td{font-size:0.78rem;color:var(--muted);line-height:1.55;font-weight:300;}
+.tco{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted-l);padding-top:0.75rem;border-top:1px solid var(--bdr);margin-top:auto;}
+
+/* AI SECTION */
+.aib{background:linear-gradient(135deg,rgba(244,123,32,0.07),rgba(251,191,36,0.05));border:1px solid rgba(244,123,32,0.22);border-radius:32px;overflow:hidden;box-shadow:0 8px 40px rgba(244,123,32,0.1);}
+.ais{display:grid;grid-template-columns:1fr 1fr;}
+.ail{padding:5rem 4rem;}
+.air{background:rgba(244,123,32,0.03);border-left:1px solid rgba(244,123,32,0.18);padding:4rem 3rem;display:flex;flex-direction:column;gap:1.1rem;}
+.aif{display:flex;gap:1rem;align-items:flex-start;padding:1.1rem;border-radius:14px;background:rgba(255,255,255,0.55);border:1px solid var(--bdr);backdrop-filter:blur(10px);transition:all 0.3s;}
+.aif:hover{background:rgba(255,255,255,0.85);border-color:var(--bdr-m);}
+.afi{width:36px;height:36px;border-radius:10px;background:rgba(244,123,32,0.1);border:1px solid rgba(244,123,32,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.aif h4{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.25rem;}
+.aif p{font-size:0.75rem;color:var(--muted);line-height:1.55;font-weight:300;}
+
+/* VAULT */
+.vc2{border-radius:18px;padding:2rem;cursor:pointer;position:relative;overflow:hidden;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);}
+.vc2:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(244,123,32,0.14);}
+.vc2::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity 0.3s;}
+.vc2:hover::before{opacity:1;}
+.vp::before{background:linear-gradient(90deg,#3b82f6,transparent);}
+.vch::before{background:linear-gradient(90deg,#10b981,transparent);}
+.vb::before{background:linear-gradient(90deg,#9333ea,transparent);}
+.vm::before{background:linear-gradient(90deg,var(--orange),transparent);}
+.vs{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:0.3rem;color:var(--text);}
+.vco{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted-l);letter-spacing:0.05em;margin-bottom:1.1rem;}
+.vt{font-size:0.78rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:1.4rem;}
+.vbg{font-family:'JetBrains Mono',monospace;font-size:0.6rem;padding:0.28rem 0.7rem;border-radius:4px;background:rgba(244,123,32,0.08);color:var(--orange);border:1px solid rgba(244,123,32,0.2);display:inline-block;}
+
+/* ABOUT */
+.aq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.4;letter-spacing:-0.02em;color:var(--text);}
+.aq em{color:var(--orange);}
+
+/* READER */
+#reader{position:fixed;inset:0;background:var(--cream);z-index:500;display:none;overflow-y:auto;}
+.rn{position:sticky;top:0;z-index:10;background:rgba(255,251,244,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr-m);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.rc{display:flex;align-items:center;gap:0.6rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;background:none;border:none;cursor:pointer;transition:color 0.2s;}
+.rc:hover{color:var(--orange);}
+.rb{max-width:720px;margin:0 auto;padding:5rem 2rem 8rem;}
+.rb h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.5rem;color:var(--text);}
+.rb p{font-size:1.05rem;line-height:1.85;color:var(--text-m);font-weight:300;margin-bottom:1.5rem;}
+.sbox{background:rgba(244,123,32,0.06);border:1px solid rgba(244,123,32,0.22);border-left:3px solid var(--orange);border-radius:12px;padding:1.5rem;margin:2.5rem 0;}
+.sbox h4{font-weight:600;color:var(--orange);margin-bottom:0.5rem;font-size:0.85rem;}
+.sbox p{font-size:0.9rem;color:var(--text-m);margin:0;}
+
+/* FOOTER */
+footer{background:linear-gradient(to bottom,var(--paper),#fef0da);border-top:1px solid var(--bdr-m);padding:5rem 2rem 3rem;position:relative;z-index:2;}
+.fg{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;}
+.fb p{font-size:0.82rem;color:var(--muted);font-weight:300;line-height:1.7;margin-top:0.85rem;max-width:260px;}
+.fco h4{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1.25rem;}
+.fco ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
+.fco a{font-size:0.85rem;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.fco a:hover{color:var(--orange);}
+.fbt{max-width:1280px;margin:3.5rem auto 0;padding-top:2rem;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.rev.vis{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}.d4{transition-delay:0.4s;}
+@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--cream);}
+::-webkit-scrollbar-thumb{background:rgba(244,123,32,0.3);border-radius:3px;}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;}.hr{display:none;}
+  .ais{grid-template-columns:1fr;}.ail{padding:3rem 2rem;}
+  .air{border-left:none;border-top:1px solid rgba(244,123,32,0.18);}
+  .fg{grid-template-columns:1fr 1fr;}
+  .nls{display:none;}.hbg{display:flex;}
+}
+@media(max-width:600px){.fg{grid-template-columns:1fr;}.si{gap:2.5rem;}.sp{padding:5rem 1.25rem;}}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<canvas id="bc"></canvas>
+<div class="ov" id="ov" onclick="cm()"></div>
+<div class="md" id="md">
+  <a href="#articles" onclick="cm()">Articles</a>
+  <a href="#topics" onclick="cm()">Topics</a>
+  <a href="#vault" onclick="cm()">Resource Vault</a>
+  <a href="#about" onclick="cm()">About</a>
+  <a href="mentis-ai.html" style="color:var(--orange);margin-top:1rem;font-weight:600;" onclick="cm()">✦ Mentis AI</a>
+</div>
+
+<!-- NAV -->
+<nav class="nb" id="nb">
+  <div class="ni">
+    <a href="#" class="nl">
+      <div class="lm">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#f47b20" stroke-width="1.4" opacity="0.75"/>
+          <circle cx="24" cy="24" r="17" stroke="#fbbf24" stroke-width="0.7" stroke-dasharray="2.5 3" opacity="0.4"/>
+          <ellipse cx="24" cy="24" rx="13.5" ry="6.5" stroke="#f47b20" stroke-width="0.85" stroke-dasharray="3 2.5" opacity="0.55" transform="rotate(-28 24 24)"/>
+          <circle cx="35.5" cy="14.5" r="2.8" fill="#f47b20" opacity="0.95"/>
+          <circle cx="35.5" cy="14.5" r="5" fill="rgba(244,123,32,0.12)"/>
+          <circle cx="24" cy="24" r="9.5" fill="rgba(255,251,244,0.6)" stroke="rgba(244,123,32,0.15)" stroke-width="0.8"/>
+          <text x="24" y="28.5" font-family="Cormorant Garamond, Georgia, serif" font-size="10.5" font-weight="600" font-style="italic" fill="#f47b20" text-anchor="middle" letter-spacing="-0.5">ML</text>
+        </svg>
+      </div>
+      <div class="lt"><span class="ls">the</span><span class="ln">Mentis <em>Lab</em></span></div>
+    </a>
+    <ul class="nls">
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#topics">Topics</a></li>
+      <li><a href="#vault">Vault</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="mentis-ai.html" class="nai"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Mentis AI</a></li>
+    </ul>
+    <button class="hbg" id="hbg" onclick="tm()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="position:relative;z-index:2;">
+  <div class="hero">
+    <div style="position:relative;z-index:1;">
+      <div class="eyebrow"><span class="edot"></span>Science · Knowledge · Discovery</div>
+      <h1 class="htitle">Where curiosity<br>meets <span class="acc">clarity.</span><br><span class="thn">Knowledge waits.</span></h1>
+      <div class="ticker"><div class="ticker-in">Think deeper.<br>Go further.</div></div>
+      <p class="hdesc">A knowledge platform for curious minds everywhere — from A-Level students to lifelong learners. Explore science, sharpen your thinking, and navigate your path from school to the world beyond.</p>
+      <div class="hbtns">
+        <a href="#articles" class="bf">Explore Articles <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="mentis-ai.html" class="bg2">Try Mentis AI <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></a>
+      </div>
+    </div>
+    <div class="hr">
+      <div class="hiw">
+        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=900" alt="Neuroscience">
+        <div class="hit"></div>
+        <div class="fc fc1"><div class="fcl">Current Focus</div><div class="fcv">Neuroscience</div></div>
+        <div class="fc fc2"><div class="fcs">school → academia</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="sb rev">
+  <div class="si">
+    <div style="text-align:center;" class="rev"><span class="sn">4</span><span class="sl">A-Level Subjects</span></div>
+    <div style="text-align:center;" class="rev d1"><span class="sn">4</span><span class="sl">Science Tracks</span></div>
+    <div style="text-align:center;" class="rev d2"><span class="sn">Free</span><span class="sl">Always &amp; Forever</span></div>
+    <div style="text-align:center;" class="rev d3"><span class="sn">∞</span><span class="sl">Curiosity Welcome</span></div>
+  </div>
+</div>
+
+<!-- ARTICLES -->
+<section id="articles" class="sp">
+  <div class="sw">
+    <div class="rev" style="margin-bottom:2rem;"><div class="se">Reading Room</div><h2 class="sh">Trending in Science</h2><p class="sd" style="max-width:500px;">Stories, discoveries, and ideas shaping the world — explained for every curious mind.</p></div>
+    <div class="srw rev" style="margin-bottom:3rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="si2" class="sri" placeholder="Search articles, topics, science…">
+    </div>
+    <div id="ag" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.5rem;"></div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div style="width:100%;height:55px;overflow:hidden;position:relative;z-index:2;margin-top:-1px;line-height:0;">
+  <svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="display:block;width:100%;height:100%;" fill="rgba(255,255,255,0.65)"><path d="M0,28 C240,55 480,0 720,28 C960,55 1200,0 1440,28 L1440,55 L0,55 Z"/></svg>
+</div>
+
+<!-- TOPICS -->
+<section id="topics" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(4px);padding:7rem 2rem;">
+  <div class="sw">
+    <div class="rev" style="margin-bottom:3.5rem;"><div class="se">Browse by Field</div><h2 class="sh">Explore Topics</h2><p class="sd">Every level of learner. Every field of curiosity.</p></div>
+    <div id="tg" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;"></div>
+  </div>
+</section>
+
+<!-- AI -->
+<section id="mentis-ai" style="padding:7rem 2rem;background:var(--paper);">
+  <div class="sw">
+    <div class="aib rev">
+      <div class="ais">
+        <div class="ail">
+          <div class="se" style="margin-bottom:0.85rem;">New Feature</div>
+          <h2 class="sh" style="margin-bottom:1rem;">Meet <em style="color:var(--orange);font-style:italic;">Mentis AI</em></h2>
+          <p class="sd" style="margin-bottom:2.5rem;max-width:380px;">Your personal science thinking partner — analyse texts, detect bias, coach your essays, and bridge A-Level to real research. Free, no login.</p>
+          <a href="mentis-ai.html" class="bf" style="display:inline-flex;">Launch Mentis AI <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);margin-top:1rem;letter-spacing:0.04em;">Free · No login · No limits</p>
+        </div>
+        <div class="air">
+          <div class="aif"><div class="afi">🔍</div><div><h4>Clarity Engine</h4><p>Paste complex text and get an instant simplified breakdown.</p></div></div>
+          <div class="aif"><div class="afi">🧠</div><div><h4>Bias Scanner</h4><p>Detect logical fallacies and hidden thinking traps in anything you read.</p></div></div>
+          <div class="aif"><div class="afi">✍️</div><div><h4>Essay Coach</h4><p>Submit your writing and get structured feedback on argument and clarity.</p></div></div>
+          <div class="aif"><div class="afi">💡</div><div><h4>Concept Explainer</h4><p>Type any concept — get a plain-English explanation with a syllabus link.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VAULT -->
+<section id="vault" class="sp" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(4px);">
+  <div class="sw">
+    <div class="rev" style="margin-bottom:3.5rem;"><div class="se">A-Level Resources</div><h2 class="sh">Resource Vault</h2><p class="sd">Notes and guides built around CAIE official syllabuses.</p></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;">
+      <div class="gc vc2 vp rev"><div class="vs">Physics</div><div class="vco">CAIE 9702</div><div class="vt">Mechanics · Waves · Electromagnetism · Quantum</div><span class="vbg">Coming Soon</span></div>
+      <div class="gc vc2 vch rev d1"><div class="vs">Chemistry</div><div class="vco">CAIE 9701</div><div class="vt">Organic · Inorganic · Physical · Spectroscopy</div><span class="vbg">Coming Soon</span></div>
+      <div class="gc vc2 vb rev d2"><div class="vs">Biology</div><div class="vco">CAIE 9700</div><div class="vt">Neuroscience · Genetics · Cell Biology · Ecology</div><span class="vbg">Coming Soon</span></div>
+      <div class="gc vc2 vm rev d3"><div class="vs">Mathematics</div><div class="vco">CAIE 9709</div><div class="vt">Pure · Statistics · Mechanics · Further Maths</div><span class="vbg">Coming Soon</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="padding:8rem 2rem;background:var(--paper);">
+  <div class="sw">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;" class="rev">
+      <div><div class="se">The Story</div><p class="aq">"Built by a student who wanted to understand the world <em>beyond the textbook.</em>"</p></div>
+      <div>
+        <p style="color:var(--text-m);font-size:0.95rem;line-height:1.85;font-weight:300;margin-bottom:1.5rem;">The Mentis Lab started as a personal mission — a CAIE A-Level student trying to bridge the gap between what textbooks teach and what science actually looks like in the real world.</p>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.85;font-weight:300;">This isn't just for students. It's for anyone curious enough to ask deeper questions — whether you're 16 preparing for exams or 40 wanting to understand the latest neuroscience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- READER -->
+<div id="reader">
+  <div class="rn"><button class="rc" onclick="cr()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to Articles</button><span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);">The Mentis Lab</span></div>
+  <div class="rb" id="rc2"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fg">
+    <div class="fb">
+      <a href="#" class="nl" style="text-decoration:none;">
+        <div class="lm"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" stroke="#f47b20" stroke-width="1.4" opacity="0.75"/><circle cx="24" cy="24" r="17" stroke="#fbbf24" stroke-width="0.7" stroke-dasharray="2.5 3" opacity="0.4"/><ellipse cx="24" cy="24" rx="13.5" ry="6.5" stroke="#f47b20" stroke-width="0.85" stroke-dasharray="3 2.5" opacity="0.55" transform="rotate(-28 24 24)"/><circle cx="35.5" cy="14.5" r="2.8" fill="#f47b20" opacity="0.95"/><circle cx="35.5" cy="14.5" r="5" fill="rgba(244,123,32,0.12)"/><circle cx="24" cy="24" r="9.5" fill="rgba(255,251,244,0.6)" stroke="rgba(244,123,32,0.15)" stroke-width="0.8"/><text x="24" y="28.5" font-family="Cormorant Garamond, Georgia, serif" font-size="10.5" font-weight="600" font-style="italic" fill="#f47b20" text-anchor="middle" letter-spacing="-0.5">ML</text></svg></div>
+        <div class="lt"><span class="ls">the</span><span class="ln">Mentis <em>Lab</em></span></div>
+      </a>
+      <p>A knowledge platform for curious minds everywhere — bridging school to academia, one idea at a time.</p>
+      <p style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted-l);">Dhaka, Bangladesh · Est. 2026</p>
+    </div>
+    <div class="fco"><h4>Explore</h4><ul><li><a href="#articles">Articles</a></li><li><a href="#topics">Browse Topics</a></li><li><a href="#vault">Resource Vault</a></li><li><a href="mentis-ai.html">Mentis AI</a></li></ul></div>
+    <div class="fco"><h4>Subjects</h4><ul><li><a href="#">Biology</a></li><li><a href="#">Chemistry</a></li><li><a href="#">Physics</a></li><li><a href="#">Mathematics</a></li></ul></div>
+    <div class="fco"><h4>Science Tracks</h4><ul><li><a href="#">Neuroscience</a></li><li><a href="#">Pharmacology</a></li><li><a href="#">Biotechnology</a></li><li><a href="#">AI in Science</a></li></ul></div>
+  </div>
+  <div class="fbt"><span>© 2026 The Mentis Lab · All Rights Reserved.</span><span>Built by a student, for every curious mind.</span><span style="color:var(--orange);">Think Deeper. Go Further.</span></div>
+</footer>
+
+<script>
+/* BUBBLES */
+const cv=document.getElementById('bc'),ctx=cv.getContext('2d');
+let bubs=[];
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+function mkb(){return{x:Math.random()*cv.width,y:cv.height+Math.random()*200,r:3+Math.random()*20,sp:0.2+Math.random()*0.55,dr:(Math.random()-0.5)*0.3,op:0.05+Math.random()*0.12,h:Math.random()<0.6?'rgba(244,123,32,':Math.random()<0.5?'rgba(251,191,36,':'rgba(255,210,120,'};}
+for(let i=0;i<42;i++){const b=mkb();b.y=Math.random()*cv.height;bubs.push(b);}
+function db(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  bubs.forEach(b=>{
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    const g=ctx.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.05,b.x,b.y,b.r);
+    g.addColorStop(0,b.h+(b.op*2.5)+')');g.addColorStop(0.65,b.h+b.op+')');g.addColorStop(1,b.h+(b.op*0.2)+')');
+    ctx.fillStyle=g;ctx.fill();
+    ctx.strokeStyle=b.h+(b.op*2)+')';ctx.lineWidth=0.6;ctx.stroke();
+    ctx.beginPath();ctx.arc(b.x-b.r*0.28,b.y-b.r*0.3,b.r*0.2,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+    b.y-=b.sp;b.x+=b.dr;
+    if(b.y+b.r<0){bubs[bubs.indexOf(b)]=mkb();}
+  });
+  requestAnimationFrame(db);
+}
+db();
+
+/* DATA */
+const arts=[
+  {id:1,title:"How Alzheimer's Starts Before Symptoms Appear",category:"Neuroscience",tag:"tn",excerpt:"New research reveals the disease process begins up to 20 years before memory loss — and what this means for early detection.",image:"https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800",rt:"6 min",body:`<h1>The Preclinical Phase of Alzheimer's</h1><p>Amyloid-beta accumulation is often the first visible sign of Alzheimer's disease, beginning decades before a patient notices memory loss.</p><div class="sbox"><h4>📚 Syllabus Link — A-Level Biology: Proteins & Cell Signalling</h4><p>Alzheimer's is fundamentally a failure of protein folding — directly connecting to your A-Level module on protein tertiary structure.</p></div><p>Scientists using PET scans can detect these protein hotspots in patients as young as 40. This shifts pharmacology's focus from curing to prevention.</p>`},
+  {id:2,title:"The Blood-Brain Barrier: Pharmacology's Greatest Wall",category:"Pharmacology",tag:"tp",excerpt:"Why 98% of potential brain drugs fail — and how nanotechnology is engineering a back-door entrance into the brain.",image:"https://images.unsplash.com/photo-1532187875605-1ef6c237ddc4?q=80&w=800",rt:"8 min",body:`<h1>Crossing the Blood-Brain Barrier</h1><p>The BBB is a highly selective semipermeable border of endothelial cells that prevents approximately 98% of drugs from reaching the brain.</p><div class="sbox"><h4>📚 Syllabus Link — A-Level Biology: Cell Membranes & Transport</h4><p>The tight junctions of BBB endothelial cells are the most extreme example of selective permeability you'll encounter in your studies.</p></div><p>Lipid nanoparticles can now be engineered to cross this barrier — opening a new class of CNS therapies previously impossible to deliver.</p>`},
+  {id:3,title:"CRISPR and the Future of Gene Editing",category:"Biotechnology",tag:"tb",excerpt:"From textbook DNA diagrams to live clinical trials — how CRISPR is rewriting the rules of medicine.",image:"https://images.unsplash.com/photo-1530026405186-ed1f13c5b3c2?q=80&w=800",rt:"7 min",body:`<h1>CRISPR: Editing the Blueprint of Life</h1><p>CRISPR/Cas9 began as an observation in bacterial immune systems. Today it is in human clinical trials for sickle cell disease, cancers, and hereditary blindness.</p><div class="sbox"><h4>📚 Syllabus Link — A-Level Biology: DNA, Genes & Inheritance</h4><p>CRISPR uses a guide RNA to target a specific DNA sequence — the same base-pairing principles you learned for DNA replication, now used as molecular scissors.</p></div><p>The ethical debates are as important as the science. Your generation will answer them.</p>`},
+  {id:4,title:"Brain-Computer Interfaces: Science Fiction Is Now Science",category:"Neuroscience",tag:"tn",excerpt:"From research labs to real patients — a clear-eyed look at what BCIs can actually do in 2026.",image:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800",rt:"9 min",body:`<h1>Brain-Computer Interfaces in 2026</h1><p>A BCI reads electrical signals from neurons and translates them into commands for external devices, restoring movement in paralysed patients.</p><div class="sbox"><h4>📚 Syllabus Link — A-Level Biology: Nervous System & Action Potentials</h4><p>Every BCI relies on detecting action potentials — the same electrochemical signals in your nervous system module.</p></div><p>Current devices can read a few hundred neurons. The human brain has 86 billion. The engineering gap is enormous — but the direction is clear.</p>`},
+];
+const tps=[
+  {icon:"🧠",title:"Neuroscience",desc:"Brain structure, memory, cognition, and neurological disorders",count:"2 articles"},
+  {icon:"💊",title:"Pharmacology",desc:"Drug design, delivery systems, and CNS pharmacology",count:"1 article"},
+  {icon:"🧬",title:"Biotechnology",desc:"Gene editing, CRISPR, and molecular biology frontiers",count:"1 article"},
+  {icon:"🤖",title:"AI in Science",desc:"Machine learning and its role in biological research",count:"Coming soon"},
+];
+
+function ra(q=''){
+  const g=document.getElementById('ag');
+  const f=arts.filter(a=>a.title.toLowerCase().includes(q.toLowerCase())||a.category.toLowerCase().includes(q.toLowerCase())||a.excerpt.toLowerCase().includes(q.toLowerCase()));
+  g.innerHTML=f.map((a,i)=>`<div class="gc ac rev d${i%4}" onclick="or(${a.id})"><div class="ai2"><img src="${a.image}" alt="${a.title}" loading="lazy"></div><div class="ab"><span class="at ${a.tag}">${a.category}</span><h3 class="atl">${a.title}</h3><p class="ax">${a.excerpt}</p><div class="af"><a href="#" class="ar" onclick="event.stopPropagation();or(${a.id});return false;">Read Article <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><span class="atime">${a.rt}</span></div></div></div>`).join('')||`<p style="color:var(--muted);grid-column:1/-1;">No results for "${q}"</p>`;
+  ir();
+}
+function rt2(){
+  document.getElementById('tg').innerHTML=tps.map((t,i)=>`<div class="gc tc2 rev d${i%4}"><div class="ti">${t.icon}</div><div class="tt">${t.title}</div><div class="td">${t.desc}</div><div class="tco">${t.count}</div></div>`).join('');
+  ir();
+}
+function or(id){
+  const a=arts.find(x=>x.id===id);if(!a)return;
+  document.getElementById('rc2').innerHTML=`<span class="at ${a.tag}" style="margin-bottom:1.5rem;display:inline-block;">${a.category}</span>${a.body}<div style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--bdr);font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--muted);">© 2026 The Mentis Lab · All Rights Reserved.</div>`;
+  document.getElementById('reader').style.display='block';
+  document.body.style.overflow='hidden';
+  document.getElementById('reader').scrollTo(0,0);
+}
+function cr(){document.getElementById('reader').style.display='none';document.body.style.overflow='';}
+window.addEventListener('scroll',()=>{document.getElementById('nb').classList.toggle('sc',window.scrollY>40);});
+function tm(){document.getElementById('md').classList.toggle('op');document.getElementById('hbg').classList.toggle('op');document.getElementById('ov').classList.toggle('op');document.body.style.overflow=document.getElementById('md').classList.contains('op')?'hidden':'';}
+function cm(){document.getElementById('md').classList.remove('op');document.getElementById('hbg').classList.remove('op');document.getElementById('ov').classList.remove('op');document.body.style.overflow='';}
+document.getElementById('si2').addEventListener('input',e=>ra(e.target.value));
+function ir(){document.querySelectorAll('.rev:not(.vis)').forEach(el=>{new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.1}).observe(el);});}
+ra();rt2();ir();
+</script>
+</body>
+</html>
